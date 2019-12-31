@@ -4,5 +4,5 @@ CREATE TABLE reviews (
   rating INTEGER NOT NULL,
   content TEXT,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  product_id INTEGER REFERENCES products(id) ON DELETE CASCADE NOT NULL,
+  product_id INTEGER REFERENCES products(id) ON DELETE CASCADE NOT NULL
 );

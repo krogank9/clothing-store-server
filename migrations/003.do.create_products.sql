@@ -9,5 +9,5 @@ CREATE TABLE products (
   stock_xl INTEGER,
   stock_xxl INTEGER,
   date_created TIMESTAMP DEFAULT now() NOT NULL,
-  collection_id INTEGER REFERENCES collections(id) ON DELETE SET NULL,
+  collection_id INTEGER REFERENCES collections(id) ON DELETE SET NULL
 );
