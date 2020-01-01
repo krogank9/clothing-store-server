@@ -3,11 +3,13 @@ CREATE TABLE products (
   name TEXT NOT NULL UNIQUE,
   description TEXT NOT NULL UNIQUE,
   price NUMERIC(15,6) NOT NULL,
+
   stock_s INTEGER,
   stock_m INTEGER,
   stock_l INTEGER,
   stock_xl INTEGER,
   stock_xxl INTEGER,
+  
   date_created TIMESTAMP DEFAULT now() NOT NULL,
   collection_id INTEGER REFERENCES collections(id) ON DELETE SET NULL
 );
