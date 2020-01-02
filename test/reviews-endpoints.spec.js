@@ -149,7 +149,6 @@ describe('Reviews Endpoints', function () {
         .send({ product_id: 1, rating: 5, content: "very good" })
         .expect(201)
         .expect(res => {
-          console.log(res.body)
           expect(res.body.user_id).to.eql(userId)
           expect(res.body.product_id).to.eql(1)
           expect(res.body.rating).to.eql(5)
