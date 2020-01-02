@@ -6,11 +6,12 @@ const ProductsService = {
             return products.filter(p => p.name.toLowerCase().contains(lowerQuery))
         })
     },
-    getAllProducts(knex, searchQuery) {
-        if (searchQuery)
-            return this.searchProducts(knex, searchQuery);
-        else
-            return knex.select('*').from('products')
+    getAllProducts(knex, collectionId) {
+        return knex.select('*').from('products').then(products => products.filter(p => {
+            if(!collectionId)
+                return true
+            return parseInt(p.collection_id) === parseInt(collectionId)
+        }))
     },
     insertProducts(knex, newProducts) {
         return knex

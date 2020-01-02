@@ -31,6 +31,7 @@ function makeProductsArray() {
       stock_l: 10,
       stock_xl: 10,
       stock_xxl: null,
+      date_created: new Date().toISOString()
     },
     {
       id: 2,
@@ -43,6 +44,7 @@ function makeProductsArray() {
       stock_l: 10,
       stock_xl: 10,
       stock_xxl: 10,
+      date_created: new Date().toISOString()
     },
     {
       id: 3,
@@ -55,6 +57,7 @@ function makeProductsArray() {
       stock_l: 10,
       stock_xl: null,
       stock_xxl: null,
+      date_created: new Date().toISOString()
     },
   ]
 }
@@ -120,16 +123,16 @@ function makeReviewsArray(simulateResponse) {
     },
     {
       ...(s?{user_name: makeUsersArray()[1].user_name}:{}),
-      id: 1,
+      id: 2,
       rating: 4,
-      content: null,
+      content: "",
       user_id: 2,
       product_id: 2,
       date_created: new Date().toISOString()
     },
     {
       ...(s?{user_name: makeUsersArray()[2].user_name}:{}),
-      id: 1,
+      id: 3,
       rating: 1,
       content: "Bad",
       user_id: 3,

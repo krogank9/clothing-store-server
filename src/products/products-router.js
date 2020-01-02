@@ -26,11 +26,20 @@ const serializeProduct = product => ({
 productsRouter.route('/')
     .get((req, res, next) => {
         const knexInstance = req.app.get('db')
-        ProductsService.getAllProducts(knexInstance, req.query.search_query)
-            .then(products => {
-                res.json(products.map(serializeProduct))
-            })
-            .catch(next)
+        if (req.query.search_query) {
+            ProductsService.searchProducts(knexInstance, req.query.search_query)
+                .then(products => {
+                    res.json(products.map(serializeProduct))
+                })
+                .catch(next)
+        }
+        else {
+            ProductsService.getAllProducts(knexInstance, req.query.collection_id)
+                .then(products => {
+                    res.json(products.map(serializeProduct))
+                })
+                .catch(next)
+        }
     })
 
 productsRouter.route('/:product_id')

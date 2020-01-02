@@ -22,21 +22,45 @@ const serializeReview = review => ({
 reviewsRouter.route('/')
     .get((req, res, next) => {
         const knexInstance = req.app.get('db')
-        ReviewsService.getAllReviews(knexInstance, req.params.product_id)
+        ReviewsService.getAllReviews(knexInstance, req.query.product_id)
             .then(reviews => {
                 res.json(reviews.map(serializeReview))
             })
             .catch(next)
     })
+    .post(requireAuth, jsonParser, (req, res, next) => {
+        const { rating, content, product_id} = req.body
+        const newReview = { "product_id": product_id, "user_id": req.user.id, "rating": rating, "content": content }
+
+        for (const [key, value] of Object.entries(newReview)) {
+            if (value == null) {
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                })
+            }
+        }
+
+        ReviewsService.insertReview(
+            req.app.get('db'),
+            newReview
+        )
+            .then(review => {
+                res
+                    .location(path.posix.join(req.originalUrl, `/${review.id}`))
+                    .status(201)
+                    .json(serializeReview(review))
+            })
+            .catch(next)
+    })
 
 reviewsRouter.route('/:review_id')
-    .all(requireAuth, (req, res, next) => {
+    .all((req, res, next) => {
         ReviewsService.getById(
             req.app.get('db'),
             req.params.review_id
         )
             .then(review => {
-                if (!review || review.user_id !== req.user.id) {
+                if (!review) {
                     return res.status(404).json({
                         error: { message: `Review doesn't exist` }
                     })
@@ -49,7 +73,9 @@ reviewsRouter.route('/:review_id')
     .get((req, res, next) => {
         res.json(serializeReview(res.review))
     })
-    .delete((req, res, next) => {
+    .delete(requireAuth, (req, res, next) => {
+        if(req.user.id !== review.user_id)
+            return res.status(401)
         ReviewsService.deleteReview(req.app.get('db'), res.review.id)
     })
 

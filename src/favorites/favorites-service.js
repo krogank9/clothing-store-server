@@ -23,12 +23,12 @@ const FavoritesService = {
     getFavoritesForUser(knex, userId) {
         return knex.select('*').from('favorites').where('user_id', userId).then(fs => this.addInfoToFavorites(knex, fs))
     },
-    insertFavorites(knex, newFavorites) {
+    insertFavorite(knex, newFavorite) {
         return knex
-            .insert(newFavorites)
+            .insert(newFavorite)
             .into('favorites')
             .returning('*')
-            .then(fs => this.addInfoToFavorites(knex, fs))
+            .then(rows => this.addInfoToFavorites(knex, rows[0]))
     },
     getById(knex, id) {
         id = parseInt(id) || 0

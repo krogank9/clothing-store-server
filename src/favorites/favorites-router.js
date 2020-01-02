@@ -40,6 +40,30 @@ favoritesRouter.route('/')
             })
             .catch(next)
     })
+    .post(requireAuth, jsonParser, (req, res, next) => {
+        const { product_id } = req.body
+        const newFavorite = { "product_id": product_id, "user_id": req.user.id }
+
+        for (const [key, value] of Object.entries(newFavorite)) {
+            if (value == null) {
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                })
+            }
+        }
+
+        FavoritesService.insertFavorite(
+            req.app.get('db'),
+            newFavorite
+        )
+            .then(favorite => {
+                res
+                    .location(path.posix.join(req.originalUrl, `/${favorite.id}`))
+                    .status(201)
+                    .json(serializeFavorite(favorite))
+            })
+            .catch(next)
+    })
 
 
 favoritesRouter.route('/:favorite_id')

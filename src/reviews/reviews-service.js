@@ -26,12 +26,12 @@ const ReviewsService = {
     getReviewsForProduct(knex, productId) {
         return knex.select('*').from('reviews').where('product_id', productId).then(r => this.addInfoToReviews(knex, r))
     },
-    insertReviews(knex, newReviews) {
+    insertReview(knex, newReview) {
         return knex
-            .insert(newReviews)
+            .insert(newReview)
             .into('reviews')
             .returning('*')
-            .then(r => this.addInfoToReviews(knex, r))
+            .then(rows => this.addInfoToReviews(knex, rows[0]))
     },
     getById(knex, id) {
         id = parseInt(id) || 0
