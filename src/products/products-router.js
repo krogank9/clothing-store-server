@@ -27,7 +27,7 @@ const serializeProduct = product => ({
 })
 
 productsRouter.route('/')
-    .get((req, res, next) => {
+    .get(jsonParser, (req, res, next) => {
         const knexInstance = req.app.get('db')
         if (req.query.search_query) {
             ProductsService.searchProducts(knexInstance, req.query.search_query)
@@ -39,6 +39,10 @@ productsRouter.route('/')
         else {
             ProductsService.getAllProducts(knexInstance, req.query.collection_id)
                 .then(products => {
+                    //
+                    if(req.body && req.body.productIds) {
+                        products = products.filter(p => req.body.productIds.contains(p.id))
+                    }
                     res.json(products.map(serializeProduct))
                 })
                 .catch(next)
