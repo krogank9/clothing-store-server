@@ -13,6 +13,9 @@ const serializeProduct = product => ({
     description: xss(product.description, { whiteList: [] }),
     price: product.price,
 
+    rating: product.rating,
+    numReviews: product.numReviews,
+
     stock_s: product.stock_s,
     stock_m: product.stock_m,
     stock_l: product.stock_l,

@@ -15,7 +15,7 @@ const ProductsService = {
               reviews.forEach(review => {rating += review.rating})
               if(reviews.length > 0)
                   rating /= reviews.length
-              return {rating: rating, numRatings: reviews.length}
+              return {rating: rating, numReviews: reviews.length}
             }).then(ratingInfo => {
                 return { ...curProduct, ...ratingInfo}
             })
