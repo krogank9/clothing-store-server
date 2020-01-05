@@ -37,10 +37,10 @@ VALUES
   (5, 4),
   (5, 5);
 
-INSERT INTO reviews (user_id, product_id, rating, content)
+INSERT INTO reviews (user_id, product_id, rating, headline, content)
 VALUES
-  (1, 1, 5, 'I love this shirt, it''s my new favorite shirt.'),
-  (2, 2, 4, NULL),
-  (3, 3, 3, 'Wow these socks are the best! They are so warm I don''t even need heating for my house anymore!'),
-  (4, 4, 5, 'This hoodie is the best, I''ve worn it for 10 days straight.'),
-  (5, 5, 1, 'I hate this backpack, it was so flimsy my dog easily ripped it apart and ate my homework.');
+  (1, 1, 5, 'Good shirt', 'I love this shirt, it''s my new favorite shirt.'),
+  (2, 2, 4, NULL, NULL),
+  (3, 3, 3, 'Love these socks', 'Wow these socks are the best! They are so warm I don''t even need heating for my house anymore!'),
+  (4, 4, 5, 'Best hoodie', 'This hoodie is the best, I''ve worn it for 10 days straight.'),
+  (5, 5, 1, 'Awful backpack', 'I hate this backpack, it was so flimsy my dog easily ripped it apart and ate my homework.');
