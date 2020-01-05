@@ -116,7 +116,8 @@ function makeReviewsArray(simulateResponse) {
       ...(s?{user_name: makeUsersArray()[0].user_name}:{}),
       id: 1,
       rating: 5,
-      content: "Good product",
+      headline: "Good product",
+      content: "It's quite good, I liked it a lot.",
       user_id: 1,
       product_id: 1,
       date_created: new Date().toISOString()
@@ -125,6 +126,7 @@ function makeReviewsArray(simulateResponse) {
       ...(s?{user_name: makeUsersArray()[1].user_name}:{}),
       id: 2,
       rating: 4,
+      headline: "",
       content: "",
       user_id: 2,
       product_id: 2,
@@ -134,7 +136,8 @@ function makeReviewsArray(simulateResponse) {
       ...(s?{user_name: makeUsersArray()[2].user_name}:{}),
       id: 3,
       rating: 1,
-      content: "Bad",
+      headline: "Bad",
+      content: "I thought it was a bad product, I didn't like it.",
       user_id: 3,
       product_id: 3,
       date_created: new Date().toISOString()

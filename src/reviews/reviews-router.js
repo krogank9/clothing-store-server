@@ -12,6 +12,7 @@ const serializeReview = review => ({
     date_created: review.date_created,
 
     rating: review.rating,
+    headline: xss(review.headline, { whiteList: [] }),
     content: xss(review.content, { whiteList: [] }),
 
     user_id: review.user_id,
@@ -29,8 +30,8 @@ reviewsRouter.route('/')
             .catch(next)
     })
     .post(requireAuth, jsonParser, (req, res, next) => {
-        const { rating, content, product_id} = req.body
-        const newReview = { "product_id": product_id, "user_id": req.user.id, "rating": rating, "content": content }
+        const { rating, headline, content, product_id} = req.body
+        const newReview = { "product_id": product_id, "user_id": req.user.id, "rating": rating, "headline": headline, "content": content }
 
         for (const [key, value] of Object.entries(newReview)) {
             if (value == null) {

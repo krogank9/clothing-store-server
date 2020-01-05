@@ -146,7 +146,7 @@ describe('Reviews Endpoints', function () {
       return supertest(app)
         .post('/api/reviews')
         .set('Authorization', 'Bearer ' + authToken)
-        .send({ product_id: 1, rating: 5, content: "very good" })
+        .send({ product_id: 1, rating: 5, headline: "great", content: "very good" })
         .expect(201)
         .expect(res => {
           expect(res.body.user_id).to.eql(userId)
