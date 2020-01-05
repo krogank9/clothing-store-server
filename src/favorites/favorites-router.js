@@ -88,6 +88,10 @@ favoritesRouter.route('/:favorite_id')
     })
     .delete((req, res, next) => {
         FavoritesService.deleteFavorite(req.app.get('db'), res.favorite.id)
+            .then(() => {
+                res.status(200).json({})
+            })
+            .catch(next)
     })
 
 module.exports = favoritesRouter

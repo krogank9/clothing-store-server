@@ -10,7 +10,9 @@ const FavoritesService = {
 
         // return the current number of threads in each board too
         f = f.map(curFavorite => {
-            return ProductsService.getById(knex, curFavorite.id).then(product => {
+            console.log(curFavorite)
+            return ProductsService.getById(knex, curFavorite.product_id).then(product => {
+                console.log(product)
                 return { ...curFavorite, product: product }
             })
         })

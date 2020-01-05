@@ -8,7 +8,7 @@ const ProductsService = {
 
         let p = Array.isArray(products) ? products : [products]
 
-        // return the current number of threads in each board too
+        // return the rating of product given by reviews
         p = p.map(curProduct => {
             return ReviewsService.getReviewsForProduct(knex, curProduct.id).then(reviews => {
               let rating = 0;

@@ -30,7 +30,7 @@ reviewsRouter.route('/')
             .catch(next)
     })
     .post(requireAuth, jsonParser, (req, res, next) => {
-        const { rating, headline, content, product_id} = req.body
+        const { rating, headline, content, product_id } = req.body
         const newReview = { "product_id": product_id, "user_id": req.user.id, "rating": rating, "headline": headline, "content": content }
 
         for (const [key, value] of Object.entries(newReview)) {
@@ -41,17 +41,24 @@ reviewsRouter.route('/')
             }
         }
 
-        ReviewsService.insertReview(
-            req.app.get('db'),
-            newReview
-        )
-            .then(review => {
-                res
-                    .location(path.posix.join(req.originalUrl, `/${review.id}`))
-                    .status(201)
-                    .json(serializeReview(review))
-            })
-            .catch(next)
+        console.log("Inserting review...")
+        console.log(newReview)
+
+        // first remove any prior reviews by user for this product
+        ReviewsService.deleteReviewsByUserForProduct(req.app.get('db'), req.user.id, newReview.product_id).then(() => {
+            // now add/update with new review
+            ReviewsService.insertReview(
+                req.app.get('db'),
+                newReview
+            )
+                .then(review => {
+                    res
+                        .location(path.posix.join(req.originalUrl, `/${review.id}`))
+                        .status(201)
+                        .json(serializeReview(review))
+                })
+                .catch(next)
+        })
     })
 
 reviewsRouter.route('/:review_id')
@@ -75,9 +82,14 @@ reviewsRouter.route('/:review_id')
         res.json(serializeReview(res.review))
     })
     .delete(requireAuth, (req, res, next) => {
-        if(req.user.id !== review.user_id)
+        if (req.user.id !== review.user_id)
             return res.status(401)
+            
         ReviewsService.deleteReview(req.app.get('db'), res.review.id)
+            .then(() => {
+                res.status(200).json({})
+            })
+            .catch(next)
     })
 
 module.exports = reviewsRouter

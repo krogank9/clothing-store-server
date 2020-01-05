@@ -25,6 +25,8 @@ describe('Products Endpoints', function () {
       const testCollections = makeCollectionsArray();
       const testProducts = makeProductsArray();
 
+      const expectedProducts = makeProductsArray(true);
+
       beforeEach('insert dummy clothing store data', () => {
         return db
           .into('collections')
@@ -42,7 +44,7 @@ describe('Products Endpoints', function () {
           .expect(200)
           .expect(res => {
             res.body = res.body.map(p => { return {...p, "price": parseFloat(p.price)} })
-            expect(res.body).to.eql(testProducts)
+            expect(res.body).to.eql(expectedProducts)
           })
       })
 
@@ -52,7 +54,7 @@ describe('Products Endpoints', function () {
           .expect(200)
           .expect(res => {
             res.body = res.body.map(p => { return {...p, "price": parseFloat(p.price)} })
-            expect(res.body).to.eql(testProducts.filter(t => t.collection_id === 1))
+            expect(res.body).to.eql(expectedProducts.filter(t => t.collection_id === 1))
           })
       })
 
@@ -62,7 +64,7 @@ describe('Products Endpoints', function () {
           .expect(200)
           .expect(res => {
             res.body = {...res.body, "price": parseFloat(res.body.price)}
-            expect(res.body).to.eql(testProducts[0])
+            expect(res.body).to.eql(expectedProducts[0])
           })
       })
 

@@ -22,7 +22,7 @@ function makeProductsArray(simulateResponse) {
   let s = simulateResponse
   return [
     {
-      ...(s?{rating: 0, numRatings: 0}:{}),
+      ...(s?{rating: 0, numReviews: 0}:{}),
       id: 1,
       collection_id: 1,
       name: 'Brown Shirt',
@@ -36,7 +36,7 @@ function makeProductsArray(simulateResponse) {
       date_created: new Date().toISOString()
     },
     {
-      ...(s?{rating: 0, numRatings: 0}:{}),
+      ...(s?{rating: 0, numReviews: 0}:{}),
       id: 2,
       collection_id: 2,
       name: 'Jeans',
@@ -50,7 +50,7 @@ function makeProductsArray(simulateResponse) {
       date_created: new Date().toISOString()
     },
     {
-      ...(s?{rating: 0, numRatings: 0}:{}),
+      ...(s?{rating: 0, numReviews: 0}:{}),
       id: 3,
       collection_id: 3,
       name: 'Wool Socks',

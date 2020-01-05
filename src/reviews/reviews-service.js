@@ -42,6 +42,11 @@ const ReviewsService = {
             .where({ id })
             .delete()
     },
+    deleteReviewsByUserForProduct(knex, userId, productId) {
+        return knex('reviews')
+            .where({ user_id: userId, product_id: productId })
+            .delete()
+    },
     updateReview(knex, id, newFields) {
         return knex('reviews')
             .where({ id })
