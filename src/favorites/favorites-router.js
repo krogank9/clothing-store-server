@@ -52,15 +52,31 @@ favoritesRouter.route('/')
             }
         }
 
-        FavoritesService.insertFavorite(
-            req.app.get('db'),
-            newFavorite
-        )
-            .then(favorite => {
-                res
-                    .location(path.posix.join(req.originalUrl, `/${favorite.id}`))
-                    .status(201)
-                    .json(serializeFavorite(favorite))
+        // If favorite already exists in my favorites, just return success & existing object
+        FavoritesService.getFavoritesForUser(req.app.get('db'), req.user.id)
+            .then(favorites => {
+                favorites = favorites.filter(f => f.product_id === newFavorite.product_id)
+                if (favorites.length > 0) {
+                    const favorite = favorites[0]
+                    res
+                        .location(path.posix.join(req.originalUrl, `/${favorite.id}`))
+                        .status(201)
+                        .json(serializeFavorite(favorite))
+                }
+                else {
+                    // Otherwise, insert as normal
+                    FavoritesService.insertFavorite(
+                        req.app.get('db'),
+                        newFavorite
+                    )
+                        .then(favorite => {
+                            res
+                                .location(path.posix.join(req.originalUrl, `/${favorite.id}`))
+                                .status(201)
+                                .json(serializeFavorite(favorite))
+                        })
+                        .catch(next)
+                }
             })
             .catch(next)
     })
