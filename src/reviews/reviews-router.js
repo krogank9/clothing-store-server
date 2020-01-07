@@ -41,9 +41,6 @@ reviewsRouter.route('/')
             }
         }
 
-        console.log("Inserting review...")
-        console.log(newReview)
-
         // first remove any prior reviews by user for this product
         ReviewsService.deleteReviewsByUserForProduct(req.app.get('db'), req.user.id, newReview.product_id).then(() => {
             // now add/update with new review
