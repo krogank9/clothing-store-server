@@ -12,6 +12,7 @@ const serializeCollection = collection => ({
     name: xss(collection.name, {whiteList: []}),
 })
 
+// Return list of all collections from the database
 collectionsRouter.route('/')
     .get((req, res, next) => {
         const knexInstance = req.app.get('db')
@@ -22,6 +23,7 @@ collectionsRouter.route('/')
             .catch(next)
     })
 
+// Return a specific collection by its resource ID
 collectionsRouter.route('/:collection_id')
     .all((req, res, next) => {
         CollectionsService.getById(

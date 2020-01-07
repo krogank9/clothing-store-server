@@ -21,6 +21,7 @@ const serializeReview = review => ({
 })
 
 reviewsRouter.route('/')
+    // Anyone may retrieve the reviews for a product given its ID
     .get((req, res, next) => {
         const knexInstance = req.app.get('db')
         ReviewsService.getAllReviews(knexInstance, req.query.product_id)
@@ -29,6 +30,8 @@ reviewsRouter.route('/')
             })
             .catch(next)
     })
+    // A registered user may post a review to any product. You cannot post 2 reviews for the same product,
+    //  doing so will result in overwriting your review.
     .post(requireAuth, jsonParser, (req, res, next) => {
         const { rating, headline, content, product_id } = req.body
         const newReview = { "product_id": product_id, "user_id": req.user.id, "rating": rating, "headline": headline, "content": content }
@@ -78,6 +81,7 @@ reviewsRouter.route('/:review_id')
     .get((req, res, next) => {
         res.json(serializeReview(res.review))
     })
+    // Users may delete previous reviews if they are logged in
     .delete(requireAuth, (req, res, next) => {
         if (req.user.id !== review.user_id)
             return res.status(401)

@@ -7,6 +7,7 @@ const { requireAuth } = require('../middleware/jwt-auth')
 const favoritesRouter = express.Router()
 const jsonParser = express.json()
 
+// Product is returned inside of each favorite, so also need serializeProduct function
 const serializeProduct = product => ({
     id: product.id,
     name: xss(product.name, { whiteList: [] }),
@@ -32,6 +33,7 @@ const serializeFavorite = favorite => ({
 })
 
 favoritesRouter.route('/')
+    // The get route is protected by auth, and returns a list of the current user's favorites
     .get(requireAuth, (req, res, next) => {
         const knexInstance = req.app.get('db')
         FavoritesService.getFavoritesForUser(knexInstance, req.user.id)
@@ -40,6 +42,8 @@ favoritesRouter.route('/')
             })
             .catch(next)
     })
+    // Allow a user to associate a favorite product with their account for later retrieval.
+    // Each product may only be favorited once
     .post(requireAuth, jsonParser, (req, res, next) => {
         const { product_id } = req.body
         const newFavorite = { "product_id": product_id, "user_id": req.user.id }
@@ -82,6 +86,7 @@ favoritesRouter.route('/')
     })
 
 
+// All favorite resources are protected by auth, as users shouldn't be able to view each other's favorites
 favoritesRouter.route('/:favorite_id')
     .all(requireAuth, (req, res, next) => {
         FavoritesService.getById(
@@ -102,6 +107,7 @@ favoritesRouter.route('/:favorite_id')
     .get((req, res, next) => {
         res.json(serializeFavorite(res.favorite))
     })
+    // Favorites may be deleted by the user provided the ID
     .delete((req, res, next) => {
         FavoritesService.deleteFavorite(req.app.get('db'), res.favorite.id)
             .then(() => {

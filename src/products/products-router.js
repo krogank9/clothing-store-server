@@ -26,6 +26,10 @@ const serializeProduct = product => ({
     date_created: product.date_created,
 })
 
+// A list of products may be returned with a few options to filter:
+// -Search query, by appending ?search_query= to the end of the endpoint
+// -Collection query, return all products in collection, by appending ?collection_id= to the endpoint
+// Or no filter to return all product
 productsRouter.route('/')
     .get(jsonParser, (req, res, next) => {
         const knexInstance = req.app.get('db')
@@ -49,6 +53,7 @@ productsRouter.route('/')
         }
     })
 
+// Individual products may be retrieved by their ID
 productsRouter.route('/:product_id')
     .all((req, res, next) => {
         ProductsService.getById(
