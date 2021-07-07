@@ -11,9 +11,9 @@ types.setTypeParser(TIMESTAMP_OID, val => val);
 
 const db = knex({
 	client: 'pg',
-	connection: DATABASE_URL,
-	ssl: true
+	connection: DATABASE_URL
 })
+knex.connection.ssl = true
 
 app.set('db', db)
 
